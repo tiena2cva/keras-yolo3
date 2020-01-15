@@ -40,7 +40,7 @@ def _main(annotation_path='train.txt',
     reduce_lr = ReduceLROnPlateau(
         monitor='val_loss', factor=0.1, patience=3, verbose=1)
     early_stopping = EarlyStopping(
-        monitor='val_loss', min_delta=0, patience=3, verbose=1)
+        monitor='val_loss', min_delta=0, patience=10, verbose=1)
 
     val_split = 0.1
     with open(annotation_path) as f:
@@ -66,7 +66,7 @@ def _main(annotation_path='train.txt',
                             validation_data=data_generator_wrapper(
                                 lines[num_train:], batch_size, input_shape, anchors, num_classes),
                             validation_steps=max(1, num_val//batch_size),
-                            epochs=30,
+                            epochs=50,
                             initial_epoch=0,
                             callbacks=[logging, checkpoint, early_stopping])
         model.save_weights(log_dir + 'trained_weights_stage_1.h5')
@@ -89,8 +89,8 @@ def _main(annotation_path='train.txt',
                             validation_data=data_generator_wrapper(
                                 lines[num_train:], batch_size, input_shape, anchors, num_classes),
                             validation_steps=max(1, num_val//batch_size),
-                            epochs=60,
-                            initial_epoch=30,
+                            epochs=100,
+                            initial_epoch=50,
                             callbacks=[logging, checkpoint, reduce_lr, early_stopping])
         model.save_weights(log_dir + 'trained_weights_final.h5')
 
