@@ -45,6 +45,11 @@ if __name__ == '__main__':
     )
 
     parser.add_argument(
+        "--font_path", type=str,
+        help='path to font, default ' + YOLO.get_defaults("font_path")
+    )
+
+    parser.add_argument(
         '--image', default=False, action="store_true",
         help='Image detection mode, will ignore all positional arguments'
     )
